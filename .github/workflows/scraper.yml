@@ -1,9 +1,8 @@
 name: Daily FBref Scraper
 
-# Triggers: daily at 02:00 UTC, or manual trigger
 on:
   schedule:
-    - cron: "0 2 * * *"
+    - cron: "0 2 * * *" # runs daily at 02:00 UTC
   workflow_dispatch:
 
 jobs:
@@ -11,11 +10,11 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      # Step 1: Checkout the repository
+      # Step 1: Checkout repository
       - name: Checkout repo
         uses: actions/checkout@v3
 
-      # Step 2: Set up Python 3.10
+      # Step 2: Set up Python
       - name: Set up Python
         uses: actions/setup-python@v4
         with:
@@ -27,19 +26,22 @@ jobs:
           python -m pip install --upgrade pip
           pip install pandas requests beautifulsoup4 lxml
 
-      # Step 4: Run the FBref scraper
-      - name: Run scraper
-        run: python scrape_fbref.py
+      # Step 4: Run the scraper
+      - name: Run FBref scraper
+        run: |
+          echo "Running scraper..."
+          python scrape_fbref.py
+          echo "Scraper finished."
 
-      # Step 5: Commit generated CSV files back to the repo
+      # Step 5: Commit CSV files only if they exist
       - name: Commit CSV files
         run: |
           git config --global user.name "github-actions"
           git config --global user.email "actions@github.com"
           if ls *.csv 1> /dev/null 2>&1; then
+            echo "CSV files found, committing..."
             git add *.csv
             git commit -m "Daily scrape update" || echo "No changes to commit"
             git push
           else
             echo "No CSV files to commit"
-          fi
