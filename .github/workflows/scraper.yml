@@ -38,6 +38,8 @@ jobs:
         run: |
           git config --global user.name "github-actions"
           git config --global user.email "actions@github.com"
+          
+          # Check if any CSV files exist
           if ls *.csv 1> /dev/null 2>&1; then
             echo "CSV files found, committing..."
             git add *.csv
@@ -45,3 +47,4 @@ jobs:
             git push
           else
             echo "No CSV files to commit"
+          fi
