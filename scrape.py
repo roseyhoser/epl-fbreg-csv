@@ -1,17 +1,16 @@
-# scrape.py
 from footballwebscraper import fbref
 
-# Example: scrape 2025-26 Premier League player stats
 league = "Premier League"
 season = "2025-2026"
 
-# Fetch squad standard stats
-df_squad = fbref.get_season_team_stats(league, season, stat_type="standard")
-df_squad.to_csv("squad_standard.csv", index=False)
+stat_types = ["standard", "shooting", "passing", "possession", "defense", "gk", "misc"]
 
-# Fetch player stats
-df_player = fbref.get_season_player_stats(league, season, stat_type="standard")
-df_player.to_csv("player_standard.csv", index=False)
+# Team stats
+for stat in stat_types:
+    df_team = fbref.get_season_team_stats(league, season, stat_type=stat)
+    df_team.to_csv(f"team_{stat}.csv", index=False)
 
-# You can repeat with other stat_types:
-# shooting, passing, possession, defense, gk, misc
+# Player stats
+for stat in stat_types:
+    df_player = fbref.get_season_player_stats(league, season, stat_type=stat)
+    df_player.to_csv(f"player_{stat}.csv", index=False)
