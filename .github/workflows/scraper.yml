@@ -2,15 +2,14 @@ name: Daily FBref Scraper
 
 on:
   schedule:
-    - cron: "0 2 * * *" # runs daily at 02:00 UTC
+    - cron: "0 2 * * *" # daily 02:00 UTC
   workflow_dispatch:
 
 jobs:
   scrape:
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout repo
-        uses: actions/checkout@v3
+      - uses: actions/checkout@v3
 
       - name: Set up Python
         uses: actions/setup-python@v4
@@ -19,12 +18,10 @@ jobs:
 
       - name: Install dependencies
         run: |
-          pip install --upgrade pip
-          pip install pandas
-          pip install footballwebscraper
+          pip install pandas requests beautifulsoup4 lxml
 
       - name: Run scraper
-        run: python scrape.py
+        run: python scrape_fbref.py
 
       - name: Commit CSV files
         run: |
