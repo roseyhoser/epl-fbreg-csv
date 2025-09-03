@@ -2,8 +2,8 @@ name: Daily FBref Scraper
 
 on:
   schedule:
-    - cron: "0 2 * * *" # every day at 02:00 UTC
-  workflow_dispatch: # allows manual trigger
+    - cron: "0 2 * * *" # runs daily at 02:00 UTC
+  workflow_dispatch:
 
 jobs:
   scrape:
@@ -20,7 +20,8 @@ jobs:
       - name: Install dependencies
         run: |
           pip install --upgrade pip
-          pip install footballwebscraper pandas
+          pip install pandas
+          pip install footballwebscraper
 
       - name: Run scraper
         run: python scrape.py
